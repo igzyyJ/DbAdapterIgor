@@ -16,5 +16,17 @@ namespace DbAdapterIgor
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MyCreateDbAdapter m = new MyCreateDbAdapter();
+            m.Show();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Form2 f = new Form2();
+            f.Show();
+        }
     }
 }
