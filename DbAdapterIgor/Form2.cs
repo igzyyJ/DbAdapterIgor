@@ -26,7 +26,8 @@ namespace DbAdapterIgor
         {
             InitializeComponent();
 
-            _Path.ProizvodiPath = @"C:\procject\new2Proizvodi_org.xml";
+           // _Path.ProizvodiPath = @"C:\procject\new2Proizvodi_org.xml";
+           _Path.ProizvodiPath = @"C:\procject\new2Proizvodi.xml";
             _Path.CijenePath = @"C:\procject\cjene.xml";
             _Path.UpdateProizvod = @"C:\procject\Proizvodi_skrUpdate.xml";
 
@@ -260,50 +261,131 @@ namespace DbAdapterIgor
 
 
 
-           // double exchange = 0.0d;
-           
+            // double exchange = 0.0d;
+
             #region WORKING PROJECT
-            XDocument docWrite = XDocument.Load(_Path.ProizvodiPath);
+            //XDocument docWrite = XDocument.Load(_Path.ProizvodiPath);
+            //int counter = 0;
+            ////cijene
+            //foreach (var item_cijene in rows)
+            //{
+            //    counter++;
 
-            //cijene
-            foreach (var item_cijene in rows)
-            {
+            //    foreach (var item_proizvodK in rows_proizvod)
+            //    {
+            //        if (item_cijene.id_ == item_proizvodK.id_)
+            //        {
+            //            if (counter == 2)
+            //            {
+            //                foreach (var i in docWrite.Descendants("product"))
+            //                {
 
-                foreach (var item_proizvod in rows_proizvod)
-                {
-                    if (item_cijene.id_ == item_proizvod.id_)
-                    {
-                        // exchange = Convert.ToDouble(item.cijena_);
-                        //  exchange = double.Parse(item.cijena_);
-                        //exchange =  7.4 * exchange;
+            //                    i.Add(new XElement("price", item_cijene.cijena_));
+            //                    i.Add(new XElement("currency", item_cijene.valuta));
+            //                    i.Add(new XElement("type", item_cijene.tip));
+            //                    //stani
+            //                    // break;
+            //                    //rows = null;
 
-                        foreach (var i in docWrite.Descendants("product"))
-                        {
+            //                    //exchange = Convert.ToDouble(item.cijena_);
+            //                    //exchange = double.Parse(item.cijena_);
+            //                    //exchange =  7.4 * exchange;
 
-                            i.Add(new XElement("price", item_cijene.cijena_));
-                            i.Add(new XElement("currency", item_cijene.valuta));
-                            i.Add(new XElement("type", item_cijene.tip));
+            //                    CalculateAll(progressBar1);
+            //                    counter = 0;
 
-                            //stani
-                        }
 
-                        docWrite.Save(_Path.UpdateProizvod);
-                        //MessageBox.Show("Prošlo je" + item2.id_.ToString());
-                      //  CalculateAll(progressBar1);
+            //                }
+            //            }
 
-                    }
 
-                }
 
-            }
 
-           // MessageBox.Show("Finish");
+
+
+
+
+            //            //MessageBox.Show("Prošlo je" + item2.id_.ToString());
+
+
+            //        }
+
+            //    }
+
+            //}
+
+            //docWrite.Save(_Path.UpdateProizvod);
+            //MessageBox.Show("Finish");
 
             #endregion
 
 
 
+            #region WORKING PROJECT2
+            XDocument docWrite = XDocument.Load(_Path.ProizvodiPath);
+            int ij = 0;
 
+            if(ij == 0)
+            {
+
+                foreach (var item_cijene in rows)
+                {
+
+                    foreach (var item_proizvodK in rows_proizvod)
+                    {
+                        if (item_cijene.id_ == item_proizvodK.id_)
+                        {
+                            foreach (var i in docWrite.Descendants("product"))
+                            {
+                                if (ij <= 2)
+                                {
+
+                                    if (item_cijene.id_ == item_proizvodK.id_)
+                                    {
+                                        i.Add(new XElement("price", item_cijene.cijena_));
+                                        i.Add(new XElement("currency", item_cijene.valuta));
+                                        i.Add(new XElement("type", item_cijene.tip));
+                                        MessageBox.Show("Brojać :" + ij.ToString() + "  proizvod id " + item_proizvodK.id_.ToString());
+                                        CalculateAll(progressBar1);
+                                        docWrite.Save(_Path.UpdateProizvod);
+                                        ij++;
+                                        continue;
+
+
+                                    }
+                                }
+
+                                else
+                                {
+                                    ij = 0; break;
+                                }
+
+                            }
+
+
+
+                        }
+
+                        //else
+                        //{ break; }
+                    }
+
+                }
+ 
+
+            }
+
+
+
+            MessageBox.Show("Finish");
+        
+
+
+
+
+
+
+            #endregion
 
 
 
@@ -326,7 +408,8 @@ namespace DbAdapterIgor
         private void button3_Click(object sender, EventArgs e)
         {
             //UpdateMe();
-            UpdateMeNew1();
+            // UpdateMeNew1();
+            UpdateMe3();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -429,10 +512,6 @@ namespace DbAdapterIgor
         }
 
 
-
-
-
-
         private void CalculateAll(System.Windows.Forms.ProgressBar progressBar)
         {
             progressBar1.Maximum = 100000;
@@ -446,6 +525,30 @@ namespace DbAdapterIgor
 
         }
 
+
+        private void UpdateMe3()
+        {
+
+
+            string nodeId = "AP892006";
+            XmlDocument xmlDoc2 = new XmlDocument();
+            xmlDoc2.LoadXml(_Path.ProizvodiPath);
+            //node["Node2"].InnerText = "Value2";  
+            XmlNode node = xmlDoc2.SelectSingleNode("/Products/Product[@ID=" + nodeId + "]");
+            node.Attributes["Price"].Value = "Project2_Update";
+
+            xmlDoc2.Save(_Path.UpdateProizvod);
+  
+
+   
+
+
+
+
+        }
+
+
     }
 
 }
+//https://www.c-sharpcorner.com/article/xml-manipulation-in-c-sharp/
