@@ -530,20 +530,24 @@ namespace DbAdapterIgor
         {
 
 
-            string nodeId = "AP892006";
-            XmlDocument xmlDoc2 = new XmlDocument();
-            xmlDoc2.LoadXml(_Path.ProizvodiPath);
-            //node["Node2"].InnerText = "Value2";  
-            XmlNode node = xmlDoc2.SelectSingleNode("/Products/Product[@ID=" + nodeId + "]");
-            node.Attributes["Price"].Value = "Project2_Update";
 
-            xmlDoc2.Save(_Path.UpdateProizvod);
-  
+            XDocument doc = XDocument.Load(_Path.UpdateProizvod);
 
-   
+            var list = doc.Element("Products").Elements("Product");
+
+            foreach (var node in list)
+            {
+                foreach (Item item in stockArray)
+                {
+                    if (node.Element("recordNumber").Value == Convert.ToString(item.Id))
+                        node.SetElementValue("count", Convert.ToString(item.count));
+                }
+            }
 
 
 
+
+            //https://stackoverflow.com/questions/25480445/updating-xml-nodes-from-an-object-list-in-c-sharp
 
         }
 
